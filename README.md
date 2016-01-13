@@ -1,29 +1,18 @@
-# ember-cli-comment-defeature
+# mimosa-comment-defeature
 
-An ember-cli addon for allowing you to specify lines or blocks of code as features to be enabled or disabled dynamically.
-
-[![Build Status](https://travis-ci.org/dbazile/ember-cli-comment-defeature.svg?branch=master)](https://travis-ci.org/dbazile/ember-cli-comment-defeature)
-
-
-## Installation
-
-```shell
-ember install ember-cli-comment-defeature
-```
+A mimosa module for allowing you to specify lines or blocks of code as features to be enabled or disabled dynamically.
 
 ## Usage
 
-In your app's `ember-cli-build.js`, define `commentDefeature` options on your app instance as such:
+In your app's `mimosa-config.js`, define `commentDefeature` options on your app instance as such:
 
 ```javascript
-const app = new EmberApp(defaults, {
   commentDefeature: {
     features: {
       'shiny': false,
       'mapping.wgs84': process.env.BUILD_PROFILE !== 'customer1'
     }
   }
-});
 ```
 
 Then you're ready to start decorating your code with feature descriptors.
@@ -35,14 +24,14 @@ Then you're ready to start decorating your code with feature descriptors.
 export default Ember.Component.extend({
   tagName: 'span',
 
-  /// feature:shiny
+  /* feature shiny */
   shiny: Ember.inject.service(),
 
-  /// <feature:shiny>
+  /* feature shiny:start */
   demonstrateShininess: Ember.observer('model', function () {
     this.get('shiny').makeNoise('Totes shiny');
   })
-  /// </feature:shiny>
+  /* feature shiny:end */
 });
 ```
 
@@ -52,14 +41,14 @@ export default Ember.Component.extend({
 export default Ember.Component.extend({
   tagName: 'span',
 
-/// feature:shiny
-///   shiny: Ember.inject.service(),
+  /* feature shiny */
+//   shiny: Ember.inject.service(),
 
-/// <feature:shiny>
-///   demonstrateShininess: Ember.observer('model', function () {
-///     this.get('shiny').makeNoise('Totes shiny')
-///   })
-/// </feature:shiny>
+  /* feature shiny:start */
+//   demonstrateShininess: Ember.observer('model', function () {
+//     this.get('shiny').makeNoise('Totes shiny')
+//   })
+  /* feature shiny:end */
 });
 ```
 
@@ -69,33 +58,33 @@ export default Ember.Component.extend({
 #### Before
 
 ```handlebars
-{{!-- feature:shiny --}}
+{{!-- feature shiny --}}
 {{shiny-feature model=shiny}}
 
 <h1>Some Page</h1>
 
-{{!-- <feature:shiny> --}}
+{{!-- feature shiny:start --}}
 <div>
   <h2>Shiny is enabled!</h2>
   <p>This text will only be visible if feature "shiny" is enabled.</p>
 </div>
-{{!-- </feature:shiny> --}}
+{{!-- feature shiny:end --}}
 ```
 
 #### After
 
 ```handlebars
-{{!-- feature:shiny --}}
+{{!-- feature shiny --}}
 {{!-- {{shiny-feature model=shiny}} --}}
 
 <h1>Some Page</h1>
 
-{{!-- <feature:shiny> --}}
+{{!-- feature shiny:start --}}
 {{!-- <div> --}}
 {{!--   <h2>Shiny is enabled!</h2> --}}
 {{!--   <p>This text will only be visible if feature "shiny" is enabled.</p> --}}
 {{!-- </div> --}}
-{{!-- </feature:shiny> --}}
+{{!-- feature shiny:end --}}
 ```
 
 ### In CSS/SCSS
@@ -103,30 +92,30 @@ export default Ember.Component.extend({
 #### Before
 
 ```css
-/* feature:shiny */
+/* feature shiny */
 .shiny-one-liner {}
 
 .some-container {
   background-color: gold;
-  /* <feature:shiny> */
+  /* feature shiny:start */
   color: red;
   border-color: lime;
-  /* </feature:shiny> */
+  /* feature shiny:end */
 }
 ```
 
 #### After
 
 ```css
-/* feature:shiny */
+/* feature shiny */
 /* .shiny-one-liner {} */
 
 .some-container {
   background-color: gold;
-/* <feature:shiny> */
+/* feature shiny:start */
 /*   color: red; */
 /*   border-color: lime; */
-/* </feature:shiny> */
+/* feature shiny:end */
 }
 ```
 
